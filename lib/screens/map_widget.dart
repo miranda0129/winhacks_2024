@@ -13,7 +13,7 @@ class MapWidget extends StatefulWidget {
 class _MapWidgetState extends State<MapWidget> {
   late GoogleMapController mapController;
 
-  final LatLng _center = const LatLng(42.3044319152832, -83.06610107421875);
+  final LatLng _center = const LatLng(42.304, -83.066);
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
@@ -37,6 +37,16 @@ class _MapWidgetState extends State<MapWidget> {
           target: _center,
           zoom: 14.0,
         ),
+        markers: {
+          const Marker(
+            markerId: MarkerId("UoW"),
+            position: LatLng(42.304, -83.066),
+            infoWindow: InfoWindow(
+              title: "Uni of Windsor",
+              snippet: "hell",
+            ),
+          )
+        } 
       ),
     ),
     );
