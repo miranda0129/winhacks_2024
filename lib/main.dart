@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:winhacks_2024/screens/checkin_widget.dart';
+import 'package:winhacks_2024/screens/friend_list_widget.dart';
+import './screens/map_widget.dart';
 
 void main() {
   runApp(const MyApp());
@@ -43,30 +46,33 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(widget.title),
+        backgroundColor: Colors.amber,
+        title: Text('App Title'),
       ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+      body: LayoutBuilder(
+        builder: (context, constraints) {
+          return DefaultTabController(
+            length: 3,
+            child: Scaffold(
+              appBar: AppBar(
+                bottom: const TabBar(
+                tabs: [
+                  Tab(icon: Icon(Icons.map)),
+                  Tab(icon:Icon(Icons.face)),
+                  Tab(icon: Icon(Icons.location_on)),
+                ]),
+              ),
+              body: const TabBarView(
+                children: [
+                  MapWidget(),
+                  FriendsListWidget(),
+                  CheckInWidget(),
+                ],
+              )
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
+          );
+        }
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
