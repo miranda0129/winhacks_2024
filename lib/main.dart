@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:winhacks_2024/screens/checkin_widget.dart';
 import 'package:winhacks_2024/screens/friend_list_widget.dart';
 import './screens/map_widget.dart';
-
 void main() {
   runApp(const MyApp());
 }
