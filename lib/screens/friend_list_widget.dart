@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:winhacks_2024/model/friend.dart';
+import 'package:winhacks_2024/screens/add_friend_widget.dart';
 
 class FriendsListWidget extends StatefulWidget {
   const FriendsListWidget({super.key});
@@ -9,10 +10,7 @@ class FriendsListWidget extends StatefulWidget {
 }
 
 class _FriendsListWidgetState extends State<FriendsListWidget> {
-   List<Friend> friendsList = [
-    Friend(name: "Dora", checkedIn: true, place: "Uni of Windsor", email: "dorastrelkova@gmail.com"), 
-    Friend(name: "Marissa", checkedIn: true, place: "WRG", email: "krallMarissa@gmail.com"), 
-    Friend(name: "Ryan", checkedIn: false, place:"", email: "ryanprarie@gmail.com")];
+   List<Friend> friendsList = Friend.getFriends();
   
 
   @override
@@ -20,12 +18,19 @@ class _FriendsListWidgetState extends State<FriendsListWidget> {
     return Scaffold(
       body: Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text(
-              'Your friends list'
+              'Your friends list',
+              style: TextStyle(
+                  fontSize: 24.0, // Adjust the font size
+                  fontWeight: FontWeight.bold, // Make it bold
+                  fontFamily: 'Roboto', // Use a specific font family if needed
+                ),
             ),
             Expanded(
               child: ListView.builder(
+                scrollDirection: Axis.vertical,
                 itemCount: friendsList.length,
                 itemBuilder: (context, index) {
                   return ListTile(
@@ -42,9 +47,12 @@ class _FriendsListWidgetState extends State<FriendsListWidget> {
     
       floatingActionButton: FloatingActionButton(
             onPressed: () {
-              print('pressed');
-            },
-            tooltip: 'Increment',
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const AddFriendWidget()),
+              );
+          },
+            tooltip: 'Add friend',
             child: const Icon(Icons.add),
           ),
     );
