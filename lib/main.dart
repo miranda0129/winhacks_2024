@@ -46,7 +46,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.amber,
-        title: Text('App Title'),
+        title: Text('Welcome!'),
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
