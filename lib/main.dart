@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:winhacks_2024/screens/checkin_widget.dart';
 import 'package:winhacks_2024/screens/friend_list_widget.dart';
 import './screens/map_widget.dart';
+import './screens/login_widget.dart';
 
 void main() {
   runApp(const MyApp());
@@ -34,11 +35,16 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+  bool loggedIn = true;
+  String loginMessage = 'You are logged in as: miranda.ransom.0129@gmail.com';
 
-  void _incrementCounter() {
+  void login() {
+    loggedIn = true;
+  }
+
+  void logout() {
     setState(() {
-      _counter++;
+      loggedIn = false;
     });
   }
 
@@ -52,26 +58,60 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
-          return DefaultTabController(
-            length: 3,
-            child: Scaffold(
-              appBar: AppBar(
-                bottom: const TabBar(
-                tabs: [
-                  Tab(icon: Icon(Icons.location_on)),
-                  Tab(icon: Icon(Icons.map)),
-                  Tab(icon:Icon(Icons.face_2)),
-                ]),
+          if (loggedIn) {
+            return DefaultTabController(
+              length: 3,
+              child: Scaffold(
+                appBar: AppBar(
+                  title: Text(loginMessage),
+                  actions: [
+                    ElevatedButton(onPressed: () {
+                      print('login button clicked');
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const LoginWidget()),
+                      );
+                    }, 
+                    child: Text(loggedIn ? 'Logout' : 'Login'),
+                  ),
+                  ],
+                  bottom: const TabBar(
+                  tabs: [
+                    Tab(icon: Icon(Icons.location_on)),
+                    Tab(icon: Icon(Icons.map)),
+                    Tab(icon:Icon(Icons.face_2)),
+                  ]),
+                ),
+                body: const TabBarView(
+                  children: [
+                    CheckInWidget(),
+                    MapWidget(),
+                    FriendsListWidget(),
+                  ],
+                )
               ),
-              body: const TabBarView(
+            );
+          } else {
+            return Center(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  CheckInWidget(),
-                  MapWidget(),
-                  FriendsListWidget(),
+                  const Text('Please login'),
+                  TextButton(onPressed: () {
+                    setState(() {
+                      loggedIn = true;
+                    });
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(builder: (context) => const LoginWidget()),
+                    );
+                  }, 
+                  child: const Text("Login")
+                  )
                 ],
-              )
-            ),
-          );
+              ),
+            );
+          }
         }
       ),
     );

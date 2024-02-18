@@ -12,33 +12,29 @@ class CheckInWidget extends StatefulWidget {
 class _CheckInWidgetState extends State<CheckInWidget> {
   List<Place> places = Place.getPlaces();
   List<int> checkIns = [1, 0, 0, 1];
-  int currentCheckedLocation = -2;
+  int currentCheckedLocation = -1;
   int currentSelectedLocation = -1;
   int prevLocation = -1;
 
   void checkIn() {
     setState(() {
-      if (prevLocation != -1) {
-        checkIns[prevLocation] = checkIns[prevLocation - 1];
+      if (currentCheckedLocation != -1) {
+        checkOut();
       } 
-      checkIns[currentSelectedLocation] = checkIns[currentSelectedLocation] + 1;
       currentCheckedLocation = currentSelectedLocation;
-      prevLocation = currentSelectedLocation;
+      checkIns[currentCheckedLocation] = checkIns[currentCheckedLocation] + 1;
       getCheckInMessage();
     });
   }
 
   void checkOut() {
-    setState(() {
-      if (prevLocation != -1) {
-        checkIns[prevLocation] = checkIns[prevLocation - 1];
-      } 
-      checkIns[currentSelectedLocation] = checkIns[currentSelectedLocation] - 1;
-      currentCheckedLocation = -2;
+     setState(() {
+      checkIns[currentCheckedLocation] = checkIns[currentCheckedLocation] - 1;
       prevLocation = currentSelectedLocation;
+      currentCheckedLocation = -1;
       currentSelectedLocation = -1;
       getCheckInMessage();
-    });
+     });
   }
 
   String getCheckInMessage() {
@@ -63,21 +59,30 @@ class _CheckInWidgetState extends State<CheckInWidget> {
               child: Text(
                 getCheckInMessage(),
                 style: const TextStyle(
-                    fontSize: 24.0, // Adjust the font size
-                    fontWeight: FontWeight.bold, // Make it bold
+                    fontSize: 18.0, // Adjust the font size
+                    fontWeight: FontWeight.normal, // Make it bold
                     fontFamily: 'Roboto', // Use a specific font family if needed
                   ),
               ),
+            ),
+            const Padding(
+              padding: EdgeInsets.all(8.0),
+              child: Text(
+                'Your Places',
+                style: TextStyle(
+                    fontSize: 24.0, // Adjust the font size
+                    fontWeight: FontWeight.bold, // Make it bold
+                    fontFamily: 'Roboto', // Use a specific font family if needed
+                  ),),
             ),
             Expanded(
               child: ListView.builder(
                 itemCount: places.length,
                 itemBuilder: (context, index) {
                   return ListTile(
-                    //isThreeLine: true,
                     tileColor: currentSelectedLocation == index ? Color.fromARGB(98, 101, 33, 117) : null,
                     title: Text(places[index].name),
-                    subtitle: Text("Check-ins:  ${checkIns[index]}"),// + places[index].getCheckedInFriends()),
+                    subtitle: Text("Current friend Check-ins:  ${checkIns[index]}"),
                     onTap: () {
                       setState(() {
                         currentSelectedLocation = index;
@@ -93,7 +98,7 @@ class _CheckInWidgetState extends State<CheckInWidget> {
     
       floatingActionButton: FloatingActionButton(
             onPressed: () {
-              if (currentCheckedLocation == currentSelectedLocation) {
+              if ( (currentCheckedLocation == currentSelectedLocation) && (currentSelectedLocation != -1) ) {
                 checkOut();
               } else {
                 checkIn();
