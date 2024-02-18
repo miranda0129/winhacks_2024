@@ -11,21 +11,78 @@ class CheckInWidget extends StatefulWidget {
 
 class _CheckInWidgetState extends State<CheckInWidget> {
   List<Place> places = Place.getPlaces();
+  List<int> checkIns = [1, 0, 0, 1];
+  int currentCheckedLocation = -2;
+  int currentSelectedLocation = -1;
+  int prevLocation = -1;
+
+  void checkIn() {
+    setState(() {
+      if (prevLocation != -1) {
+        checkIns[prevLocation] = checkIns[prevLocation - 1];
+      } 
+      checkIns[currentSelectedLocation] = checkIns[currentSelectedLocation] + 1;
+      currentCheckedLocation = currentSelectedLocation;
+      prevLocation = currentSelectedLocation;
+      getCheckInMessage();
+    });
+  }
+
+  void checkOut() {
+    setState(() {
+      if (prevLocation != -1) {
+        checkIns[prevLocation] = checkIns[prevLocation - 1];
+      } 
+      checkIns[currentSelectedLocation] = checkIns[currentSelectedLocation] - 1;
+      currentCheckedLocation = -2;
+      prevLocation = currentSelectedLocation;
+      currentSelectedLocation = -1;
+      getCheckInMessage();
+    });
+  }
+
+  String getCheckInMessage() {
+    bool checkedIn = currentCheckedLocation >= 0 && currentCheckedLocation <= places.length;
+    if (checkedIn) {
+      String placeName = places[currentCheckedLocation].name;
+      return 'You\'re checked in at: $placeName';
+    } else {
+      return "You are not checked in anywhere";
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: Center(
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                getCheckInMessage(),
+                style: const TextStyle(
+                    fontSize: 24.0, // Adjust the font size
+                    fontWeight: FontWeight.bold, // Make it bold
+                    fontFamily: 'Roboto', // Use a specific font family if needed
+                  ),
+              ),
+            ),
             Expanded(
               child: ListView.builder(
                 itemCount: places.length,
                 itemBuilder: (context, index) {
                   return ListTile(
                     //isThreeLine: true,
+                    tileColor: currentSelectedLocation == index ? Color.fromARGB(98, 101, 33, 117) : null,
                     title: Text(places[index].name),
-                    //subtitle: Text(places[index].getLocationDisplay()),
+                    subtitle: Text("Check-ins:  ${checkIns[index]}"),// + places[index].getCheckedInFriends()),
+                    onTap: () {
+                      setState(() {
+                        currentSelectedLocation = index;
+                      });
+                    },
                   );
                 }
               ),
@@ -36,11 +93,15 @@ class _CheckInWidgetState extends State<CheckInWidget> {
     
       floatingActionButton: FloatingActionButton(
             onPressed: () {
-              print('pressed');
+              if (currentCheckedLocation == currentSelectedLocation) {
+                checkOut();
+              } else {
+                checkIn();
+              }
             },
-            tooltip: 'Increment',
-            child: const Icon(Icons.add),
+            tooltip:  currentCheckedLocation == currentSelectedLocation ? 'Check out' : 'Check-In',
+            child: currentCheckedLocation == currentSelectedLocation ? const Icon(Icons.exit_to_app) : const Icon(Icons.check),
           ),
-    );;
+    );
   }
 }

@@ -1,3 +1,5 @@
+import 'package:winhacks_2024/model/place.dart';
+
 class Friend {
   String name;
   bool checkedIn;
@@ -17,8 +19,8 @@ class Friend {
 
   static List<Friend> getFriends() {
     return [
-      Friend(name: "Dora", checkedIn: true, place: "Uni of Windsor", email: "dorastrelkova@gmail.com"), 
-      Friend(name: "Marissa", checkedIn: true, place: "WRG", email: "krallMarissa@gmail.com"), 
+      Friend(name: "Dora", checkedIn: true, place: "Green Bean", email: "dorastrelkova@gmail.com"), 
+      Friend(name: "Marissa", checkedIn: true, place: "Windsor Rock Gym", email: "krallMarissa@gmail.com"), 
       Friend(name: "Ryan", checkedIn: false, place:"", email: "ryanprarie@gmail.com")
     ];
   }

@@ -58,16 +58,16 @@ class _MyHomePageState extends State<MyHomePage> {
               appBar: AppBar(
                 bottom: const TabBar(
                 tabs: [
-                  Tab(icon: Icon(Icons.map)),
-                  Tab(icon:Icon(Icons.face)),
                   Tab(icon: Icon(Icons.location_on)),
+                  Tab(icon: Icon(Icons.map)),
+                  Tab(icon:Icon(Icons.face_2)),
                 ]),
               ),
               body: const TabBarView(
                 children: [
+                  CheckInWidget(),
                   MapWidget(),
                   FriendsListWidget(),
-                  CheckInWidget(),
                 ],
               )
             ),
