@@ -71,10 +71,6 @@ void addCustomIcon() {
         colorSchemeSeed: Colors.green[700],
     ),
     home: Scaffold(
-      appBar: AppBar(
-        title: const Text('Find your next Third Place'),
-        elevation: 2,
-      ),
       body: GoogleMap(
         onMapCreated: _onMapCreated,
         initialCameraPosition: CameraPosition(

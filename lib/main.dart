@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:winhacks_2024/screens/checkin_widget.dart';
 import 'package:winhacks_2024/screens/friend_list_widget.dart';
 import './screens/map_widget.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -45,8 +46,9 @@ class _MyHomePageState extends State<MyHomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.amber,
-        title: Text('Welcome!'),
+        backgroundColor: Color.fromARGB(98, 101, 33, 117),
+        title: const Text('Find your next Third Place'),
+        elevation: 2,
       ),
       body: LayoutBuilder(
         builder: (context, constraints) {
