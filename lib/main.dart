@@ -53,7 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color.fromARGB(98, 101, 33, 117),
-        title: const Text('Find your next Third Place'),
+        title: const Text('Unity through Third Spaces'),
         elevation: 2,
       ),
       body: LayoutBuilder(

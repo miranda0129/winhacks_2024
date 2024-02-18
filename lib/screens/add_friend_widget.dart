@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:winhacks_2024/model/friend_request.dart';
 
 class AddFriendWidget extends StatefulWidget {
-  const AddFriendWidget({super.key});
+  final List<FriendRequest> pendingRequests;
+
+  const AddFriendWidget({super.key, required this.pendingRequests});
 
   @override
   State<AddFriendWidget> createState() => _AddFriendWidgetState();
@@ -9,7 +12,11 @@ class AddFriendWidget extends StatefulWidget {
 
 class _AddFriendWidgetState extends State<AddFriendWidget> {
   final TextEditingController emailTextField = TextEditingController();
+
   bool alertBoxActive = false;
+    void sendFriendRequest(String email) {
+      //widget.pendingRequests = [...pendingRequests];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +36,7 @@ class _AddFriendWidgetState extends State<AddFriendWidget> {
                     child: TextField(
                       controller: emailTextField,
                       decoration: const InputDecoration(
-                          //border: OutlineInputBorder(),
+                          border: OutlineInputBorder(),
                           hintText: 'by email',
                           alignLabelWithHint: true,
                       ),
@@ -74,9 +81,5 @@ class _AddFriendWidgetState extends State<AddFriendWidget> {
         );
       },
     );
-  }
-
-  void sendFriendRequest(String email) {
-
   }
 }

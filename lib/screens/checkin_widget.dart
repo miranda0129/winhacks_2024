@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:winhacks_2024/model/friend.dart';
 import 'package:winhacks_2024/model/place.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
@@ -11,6 +12,7 @@ class CheckInWidget extends StatefulWidget {
 
 class _CheckInWidgetState extends State<CheckInWidget> {
   List<Place> places = Place.getPlaces();
+  List<Friend> friends = Friend.getFriends();
   List<int> checkIns = [1, 0, 0, 1];
   int currentCheckedLocation = -1;
   int currentSelectedLocation = -1;
@@ -22,14 +24,12 @@ class _CheckInWidgetState extends State<CheckInWidget> {
         checkOut();
       } 
       currentCheckedLocation = currentSelectedLocation;
-      checkIns[currentCheckedLocation] = checkIns[currentCheckedLocation] + 1;
       getCheckInMessage();
     });
   }
 
   void checkOut() {
      setState(() {
-      checkIns[currentCheckedLocation] = checkIns[currentCheckedLocation] - 1;
       prevLocation = currentSelectedLocation;
       currentCheckedLocation = -1;
       currentSelectedLocation = -1;
@@ -45,6 +45,48 @@ class _CheckInWidgetState extends State<CheckInWidget> {
     } else {
       return "You are not checked in anywhere";
     }
+  }
+
+  String getCheckedInFriendsString() {
+    if ((currentSelectedLocation >= 0) && (currentSelectedLocation < checkIns.length)) {
+      final buffer = StringBuffer();
+
+      if (currentCheckedLocation == currentSelectedLocation) {
+        buffer.write("** you **\n");
+      }
+
+      for (Friend friend in friends) {
+        if (friend.placeId == currentSelectedLocation) {
+          buffer.write("${friend.name}\n");
+        }
+      }
+
+      return buffer.toString();
+    } else {
+      return 'select location to view friends checked in there';
+    }
+    
+  }
+
+  void _showAlertDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          //title: Text(),
+          content: Text(getCheckedInFriendsString()),
+          actions: [
+            TextButton(
+              onPressed: () {
+                // Close the alert dialog
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   @override
@@ -92,6 +134,12 @@ class _CheckInWidgetState extends State<CheckInWidget> {
                 }
               ),
             ),
+            TextButton(
+              onPressed: () {
+                _showAlertDialog(context);
+              },
+              child: const Text("See who's checked-in"),
+            )
           ],
         ),
       ),
@@ -100,8 +148,27 @@ class _CheckInWidgetState extends State<CheckInWidget> {
             onPressed: () {
               if ( (currentCheckedLocation == currentSelectedLocation) && (currentSelectedLocation != -1) ) {
                 checkOut();
-              } else {
+              } else if (currentSelectedLocation >= 0 && currentSelectedLocation < checkIns.length) {
                 checkIn();
+              } else {
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      //title: Text(),
+                      content: const Text('Select a place to check-in'),
+                      actions: [
+                        TextButton(
+                          onPressed: () {
+                            // Close the alert dialog
+                            Navigator.of(context).pop();
+                          },
+                          child: Text('OK'),
+                        ),
+                      ],
+                    );
+                  },
+              );
               }
             },
             tooltip:  currentCheckedLocation == currentSelectedLocation ? 'Check out' : 'Check-In',
