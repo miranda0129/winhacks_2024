@@ -3,6 +3,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart'; // for google map
 import 'package:flutter_google_places/flutter_google_places.dart';
 import 'package:google_api_headers/google_api_headers.dart';
 import 'package:google_maps_webservice/places.dart';
+import 'package:winhacks_2024/model/place.dart';
 // instructions: https://codelabs.developers.google.com/codelabs/google-maps-in-flutter#3
 
 class MapWidget extends StatefulWidget {
@@ -21,46 +22,18 @@ class _MapWidgetState extends State<MapWidget> {
     mapController = controller;
   }
 
+  List<Marker> getMarkers(List<Place> places) {
+    List<Marker> markers = [];
+    for (Place place in places) {
+      markers.add(place.getMarker());
+    }
+    return markers;
+  }
+
   // list of map markers on google map
   List<Marker> _marker = [];
-  final List<Marker> _list = const [
-
-    Marker(
-        markerId: MarkerId('1'),
-      position: LatLng(42.31542205810547,-83.00333404541016),
-      infoWindow: InfoWindow(
-        title: 'Windsor Rock Gym',
-        snippet: "Bouldering hangout spot, busiest on Wed & Fri.",
-      )
-    ),
-
-    Marker(
-        markerId: MarkerId('2'),
-        position: LatLng(42.31794738769531,-83.00985717773438),
-        infoWindow: InfoWindow(
-          title: 'Willistead Park',
-          snippet: "Pretty paths for mental health walks."
-        )
-    ),
-
-    Marker(
-        markerId: MarkerId('3'),
-        position: LatLng(42.30780029296875,-83.06781768798828),
-        infoWindow: InfoWindow(
-          title: 'Leddy Library',
-          snippet: "Nice atmosphere for getting work done!"
-        )
-    ),
-
-        Marker(
-        markerId: MarkerId('4'),
-        position: LatLng(42.305442810058594,-83.06262969970703),
-        infoWindow: InfoWindow(
-          title: 'Green Bean',
-          snippet: "Great coffee and music, very cozy."
-        )
-    ),
-    ];
+  final List<Place> places = Place.getPlaces();
+  late final List<Marker> _list = getMarkers(places);
 
     //BitmapDescriptor markerIcon1 = BitmapDescriptor.defaultMarker;
     //BitmapDescriptor markerIcon2 = BitmapDescriptor.defaultMarker;

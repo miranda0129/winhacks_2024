@@ -10,9 +10,7 @@ class CheckInWidget extends StatefulWidget {
 }
 
 class _CheckInWidgetState extends State<CheckInWidget> {
-  List<Place> places = [
-    Place(name: "windsor rock gym")
-  ];
+  List<Place> places = Place.getPlaces();
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +18,6 @@ class _CheckInWidgetState extends State<CheckInWidget> {
       body: Center(
         child: Column(
           children: [
-            const Text(
-              'Your friends list'
-            ),
             Expanded(
               child: ListView.builder(
                 itemCount: places.length,
