@@ -10,9 +10,9 @@ class FriendsListWidget extends StatefulWidget {
 
 class _FriendsListWidgetState extends State<FriendsListWidget> {
    List<Friend> friendsList = [
-    Friend(name: "Dora", checkedIn: true, place: "Uni of Windsor"), 
-    Friend(name: "Marissa", checkedIn: true, place: "WRG"), 
-    Friend(name: "Ryan", checkedIn: false, place: "")];
+    Friend(name: "Dora", checkedIn: true, place: "Uni of Windsor", email: "dorastrelkova@gmail.com"), 
+    Friend(name: "Marissa", checkedIn: true, place: "WRG", email: "krallMarissa@gmail.com"), 
+    Friend(name: "Ryan", checkedIn: false, place:"", email: "ryanprarie@gmail.com")];
   
 
   @override
@@ -30,7 +30,7 @@ class _FriendsListWidgetState extends State<FriendsListWidget> {
                 itemBuilder: (context, index) {
                   return ListTile(
                     isThreeLine: true,
-                    title: Text(friendsList[index].name),
+                    title: Text("${friendsList[index].name}, ${friendsList[index].email}"),
                     subtitle: Text(friendsList[index].getLocationDisplay()),
                   );
                 }
